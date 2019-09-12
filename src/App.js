@@ -3,57 +3,46 @@ import React  from 'react';
 /// Modifica el componente para que se puedan agregar tareas
 
 class App extends React.Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {
-      newTask : '',
-      tasks : [
-        'Sacar la ropa',
-        'Hacer la cama',
-        'Leer un rato'
+      newTask: '',
+      tasks: [
+        'sacar la ropa', 
+        'hacer la cama', 
+        'leer un rato'
       ]
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleText = this.handleText.bind(this)
   }
-
+  
+  addTask(event) {
+    event.preventDefault()
+    let oldTasks = this.state.tasks
+    let newTask = this.state.newTask
+    this.setState({
+      tasks: [...oldTasks, newTask],
+      newTask: ''
+    })
+  }
+  updateTask(event) {
+    this.setState({
+      newTask: event.target.value
+    })
+  }
   render() {
     return (
-      <div className="wrapper">
-        <div className="list">
+      <div class="wrapper">
+        <div class="list">
           <h3>Por hacer:</h3>
-          <ul className="todo">
-            {this.state.tasks.map(e => {
-              return <li key = {e}>{e}</li>
-            })}
+          <ul class="todo">
+            {this.state.tasks.map((task, index) => <li key={index}>{task}</li>)}
           </ul>
-           <form onSubmit = {this.handleSubmit}>
-             <input
-             type="text"
-             id="new-task"
-             onChange = {this.handleText}
-             value = {this.state.newTask}
-             placeholder="Ingresa una tarea y oprime Enter" />
-           </form>
+          <form onSubmit={this.addTask.bind(this)}>
+            <input type="text" id="new-task" placeholder="Ingresa una tarea y oprime Enter" value={this.state.newTask} onChange={this.updateTask.bind(this)}/>
+          </form>
         </div>
       </div>
-    );
-  }
-
-  handleText(event){
-    this.setState({newTask: event.target.value})
-  }
-
-  handleSubmit(event){
-    event.preventDefault()
-    const newTask = this.state.newTask
-    const oldTask = this.state.tasks
-    if (this.state.task !== ''){
-      this.setState({
-        tasks: [...oldTask, newTask],
-        newTask: ''
-      })
-    }
+    )
   }
 }
 
